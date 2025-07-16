@@ -1,0 +1,72 @@
+﻿@page "{pageNumber?}"
+@model OrchidSellerClient.Pages.OrchidPages.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Description
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Orchid Image
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Orchid[0].Price)
+            </th>
+            <th>
+                Category
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Orchid) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrchidDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrchidName)
+            </td>
+            <td>
+                <img src="@(string.IsNullOrEmpty(item.OrchidUrl) ? "/images/no-image.png" : item.OrchidUrl)"
+                alt="Orchid Image"
+                style="max-width: 100px; max-height: 100px;" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.OrchidId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.OrchidId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.OrchidId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                <a class="page-link" asp-route-pageNumber="@i">@i</a>
+            </li>
+        }
+    </ul>
+</nav>
